@@ -50,10 +50,7 @@ public class AutonomousWithoutGyro extends CommandGroup {
     	System.out.println("gyro angle: " + gyro.getAngle());
     	// Timer.delay(1);
     	
-    	Robot.left1.set(0.5);
-    	Robot.left2.set(0.5);
-   		Robot.right1.set(0.5);
-   		Robot.right2.set(0.5);
+
    		Timer.delay(1);  //move forward (left and right position)
    		System.out.println("gyro angle: " + gyro.getAngle());
    		//right has to be multipled by -1
@@ -147,10 +144,7 @@ public class AutonomousWithoutGyro extends CommandGroup {
     
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.left1.set(0);
-        Robot.right1.set(0);
-        Robot.left2.set(0);
-        Robot.right2.set(0);
+
     }
 
     // Called when another command which requires one or more of the same subsystems is scheduled to run

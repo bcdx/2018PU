@@ -1,21 +1,13 @@
 package org.usfirst.frc.team4856.robot;
 
-import java.io.IOException; //from newer GRIP code
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-//CANTalon support package
-import com.ctre.CANTalon;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.HashMap;
-
 import edu.wpi.cscore.*;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.networktables.*;
 import edu.wpi.first.wpilibj.vision.*;
@@ -41,7 +33,7 @@ import org.opencv.objdetect.*;
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
- */a
+ */
 public class Robot extends IterativeRobot {
 	//NetworkTable table; // older GRIP code
 
@@ -54,10 +46,10 @@ public class Robot extends IterativeRobot {
 	public static AnalogGyro gyro;
 //	public static VisionMain vision;
 	
-	public static CANTalon left1= new CANTalon(3);
-	public static CANTalon left2= new CANTalon(4);
-	public static CANTalon right1= new CANTalon(1);
-	public static CANTalon right2= new CANTalon(2);
+	public static TalonSRX left1= new TalonSRX(3);
+	public static TalonSRX left2= new TalonSRX(4);
+	public static TalonSRX right1= new TalonSRX(1);
+	public static TalonSRX right2= new TalonSRX(2);
 	
 	Thread visionThread;
 	GripPipeline gp;
@@ -172,11 +164,11 @@ public class Robot extends IterativeRobot {
 				outputStream.putFrame(mat);
 				System.out.print("mat: " + mat);
 				gp.process(mat);	
-				ArrayList<MatOfPoint> output = new ArrayList<MatOfPoint>();
+				//ArrayList<MatOfPoint> output = new ArrayList<MatOfPoint>();
 				
-				output = gp.filterContoursOutput();
+				//output = gp.filterContoursOutput();
 				
-				Object[] outputArray = output.toArray();
+				//Object[] outputArray = output.toArray();
 				
 //				Array[] allcontours;
 				
@@ -202,8 +194,6 @@ public class Robot extends IterativeRobot {
 				
 		oi = new OI();
 		autonomousWithoutGyro = new AutonomousWithoutGyro(); 
-		left2.changeControlMode(CANTalon.TalonControlMode.Follower);
-        right2.changeControlMode(CANTalon.TalonControlMode.Follower);
         // gyro.setSensitivity(kVoltsPerDegreePerSecond);
 
 //		double[] defaultValue = new double[0];
@@ -285,14 +275,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        double leftAxis = leftstick.getY();
-        left1.set(-1*leftAxis);
-        left2.changeControlMode(CANTalon.TalonControlMode.Follower);
-        left2.set(left1.getDeviceID());
-        double rightAxis = rightstick.getY();
-        right1.set(1*rightAxis);
-        right2.changeControlMode(CANTalon.TalonControlMode.Follower);
-        right2.set(right1.getDeviceID());
+   
         
 //        //Gyro - keep robot straight
 //        double turningValue = (kAngleSetpoint - gyro.getAngle()) * kP;
