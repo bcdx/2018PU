@@ -3,29 +3,15 @@ package org.usfirst.frc.team4856.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import java.util.ArrayList;
-import edu.wpi.cscore.*;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
+
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.*;
 import edu.wpi.first.wpilibj.networktables.*;
 import edu.wpi.first.wpilibj.vision.*;
 import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
+
 import org.usfirst.frc.team4856.robot.commands.*;
 import org.usfirst.frc.team4856.robot.subsystems.*;
-
-import edu.wpi.first.wpilibj.vision.VisionPipeline;
-
-import org.opencv.core.*;
-import org.opencv.core.Core.*;
-import org.opencv.features2d.FeatureDetector;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.*;
-import org.opencv.objdetect.*;
-
-
 
 /**
  * The VM (virtual machine) is configured to automatically run this class, and to call the
@@ -35,9 +21,6 @@ import org.opencv.objdetect.*;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	//NetworkTable table; // older GRIP code
-
-	public NetworkTable table;
 	
 	public static OI oi;
 	public static Scaler scaler;
@@ -52,22 +35,11 @@ public class Robot extends IterativeRobot {
 	public static TalonSRX right2= new TalonSRX(2);
 	
 	Thread visionThread;
-	GripPipeline gp;
 	
 	Joystick leftstick = new Joystick(1);
 	Joystick rightstick = new Joystick(0);
 	Joystick thirdstick = new Joystick(2);
 	
-//	//Gyro code - Reference Sample Project
-//	// gyro value of 360 is set to correspond to one full revolution
-//	private static final double kAngleSetpoint = 0.0;
-//	private static final double kP = 0.005; // proportional turning constant
-//	private static final double kVoltsPerDegreePerSecond = 0.0128;  //gyro calibration constant, may need to be adjusted;
-//	private static final int kLeftMotorPort = 0;
-//	private static final int kRightMotorPort = 1;
-//	private static final int kGyroPort = 0;
-//	private static final int kJoystickPort = 0;
-
 //	private RobotDrive myRobot = new RobotDrive(kLeftMotorPort, kRightMotorPort);
 //	private AnalogGyro gyro = new AnalogGyro(kGyroPort);
 //	private Joystick joystick = new Joystick(kJoystickPort);
@@ -87,135 +59,12 @@ public class Robot extends IterativeRobot {
      */
     
     public void robotInit() {
-    	
-//    	visionThread = new Thread(() -> {
-//			// Get the Axis camera from CameraServer
-//			AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-accc8e2708a3.local");
-//			camera.setResolution(640, 480); // Set the resolution
-//
-//			// Get a CvSink. This will capture Mats from the camera
-//			CvSink cvSink = CameraServer.getInstance().getVideo();
-//			// Setup a CvSource. This will send images back to the Dashboard
-//			CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
-//
-//			// Mats are very memory expensive. Lets reuse this Mat.
-//			mat = new ArrayList<MatOfPoint>();
-//			GripPipeline gp = new GripPipeline();
-//			// This cannot be 'true'. The program will never exit if it is. This lets the robot stop this thread when 
-//			//restarting robot code or deploying.		
-//			
-//			while (!Thread.interrupted()) {
-//				// Tell the CvSink to grab a frame from the camera and put it
-//				// in the source mat.  If there is an error notify the output.
-//				if (cvSink.grabFrame(mat) == 0) { 
-//					// Send the output the error.
-//					outputStream.notifyError(cvSink.getError()); 
-//					// skip the rest of the current iteration
-//					continue;
-//				}
-//				// Put a rectangle on the image
-//				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
-//						new Scalar(255, 255, 255), 5);
-//				// Give the output stream a new image to display
-//				outputStream.putFrame(mat);
-//				gp.process(mat);
-////				System.out.print("mat: " + mat);
-//				mat = gp.filterContoursOutput();
-//				
-////				for(int x = 0; x <= mat.rows(); x++){
-////					for (int y = 0; y <= mat.cols(); y++) {
-////						System.out.println(mat.get(x, y));
-////					}
-////				}
-//				
-//			}
-//		});  
-    	
-    	visionThread = new Thread(() -> {
-			// Get the Axis camera from CameraServer
-			AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-accc8e2708a3.local");
-			// Set the resolution
-			camera.setResolution(640, 480);
-
-			// Get a CvSink. This will capture Mats from the camera
-			CvSink cvSink = CameraServer.getInstance().getVideo();
-			// Setup a CvSource. This will send images back to the Dashboard
-			CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 640, 480);
-
-			// Mats are very memory expensive. Lets reuse this Mat.
-			Mat mat = new Mat();
-
-			// This cannot be 'true'. The program will never exit if it is. This
-			// lets the robot stop this thread when restarting robot code or
-			// deploying.
-			while (!Thread.interrupted()) {
-				// Tell the CvSink to grab a frame from the camera and put it
-				// in the source mat.  If there is an error notify the output.
-				if (cvSink.grabFrame(mat) == 0) {
-					// Send the output the error.
-					outputStream.notifyError(cvSink.getError());
-					// skip the rest of the current iteration
-					continue;
-				}
-				// Put a rectangle on the image
-				Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400),
-						new Scalar(255, 255, 255), 5);
-				// Give the output stream a new image to display
-				outputStream.putFrame(mat);
-				System.out.print("mat: " + mat);
-				gp.process(mat);	
-				//ArrayList<MatOfPoint> output = new ArrayList<MatOfPoint>();
-				
-				//output = gp.filterContoursOutput();
-				
-				//Object[] outputArray = output.toArray();
-				
-//				Array[] allcontours;
-				
-			}
-});
-    	
-    	
-		visionThread.setDaemon(true);
-		visionThread.start();
 		
-		scoop = new Scoop(0, 1, 2);		
-		scaler = new Scaler();
-		bucket = new Bucket();
-		//gyro = new AnalogGyro(0);
-
-		//gyro = new AnalogGyro(1);
-		
-		System.out.println("scaler inst in robot.java");
-		System.out.println("scoop inst in robot.java");
-		System.out.println("bucket inst in robot.java");
-		//int angle = (int) gyro.getAngle(); 
-		//System.out.println("Angle is " + angle);
-				
 		oi = new OI();
+		
+		//TODO: Replace with new autonomous
 		autonomousWithoutGyro = new AutonomousWithoutGyro(); 
-        // gyro.setSensitivity(kVoltsPerDegreePerSecond);
-
-//		double[] defaultValue = new double[0];
-//		while (true) {
-//			
-//		System.out.println("starting robotInit");
-//			double[] widths = table.getNumberArray("width", defaultValue);
-//			System.out.println("width table created" + widths.length);
-//			for (double width : widths) {
-//				System.out.println("width: "+ width);
-//			}
-////				double distance = -0.000002*width*width*width*width+0.000277*width*width*width-0.011785*width*width-0.019093*width+10.0866;
-////				//converting from pixels to meters
-////				angle = 0.052*distance*distance*distance*distance-1.03*distance*distance*distance+8.49*distance*distance-37.29*distance+93.64;
-//////				//find angle from distance (using regression if v0 = 30)
-////				System.out.println("width: "+ width);
-////				System.out.println("distance: "+ distance);
-////				System.out.println("angle: "+ angle);
-////////			}
-//////			
-//////			Timer.delay(1);
-////		} //END of older GRIP code
+      
 }
 
 	public void disabledPeriodic() {
