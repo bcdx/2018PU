@@ -11,6 +11,7 @@ public class Scaler extends Subsystem {
 	 // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	private SpeedController scalerMotor;
+	
 		
 	public Scaler () {
 		super();                                                                                                                                                                                      
@@ -18,13 +19,18 @@ public class Scaler extends Subsystem {
 	}
 	
    public void up() {
-	   scalerMotor.set(0.3);
-	   System.out.println("extend method called");
+	  
+	   
+		   scalerMotor.set(0.8);
+		   System.out.println("extend method called");
+	  
+	   
    }
  
 	
    public void down () {
-	   scalerMotor.set(-0.3);
+	  
+	   scalerMotor.set(-0.8);
 	   System.out.println("retract method called");
 	}
    

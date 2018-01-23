@@ -3,10 +3,10 @@ import edu.wpi.first.wpilibj.Relay;
 //import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team4856.robot.commands.*;
-import org.usfirst.frc.team4856.robot.subsystems.Scaler;
-import org.usfirst.frc.team4856.robot.subsystems.Scoop;
-import org.usfirst.frc.team4856.robot.commands.ScaleUp;
-import org.usfirst.frc.team4856.robot.commands.ScaleDown;
+//import org.usfirst.frc.team4856.robot.subsystems.Scaler;
+//import org.usfirst.frc.team4856.robot.subsystems.Scoop;
+//import org.usfirst.frc.team4856.robot.commands.ScaleUp;
+//import org.usfirst.frc.team4856.robot.commands.ScaleDown;
 
 
 //import org.usfirst.frc.team4856.robot.commands.TankDriveWithJoysticks;
@@ -25,19 +25,19 @@ public class OI {
 	public Joystick thirdStick = new Joystick(2); 
 
 	public OI() {
-		JoystickButton scoopReceive = new JoystickButton (thirdStick, 3);
-		JoystickButton scoopPlace = new JoystickButton (thirdStick, 2);
-		JoystickButton scaleUp = new JoystickButton (thirdStick, 5);
-		JoystickButton scaleDown = new JoystickButton (thirdStick, 6);
-		JoystickButton servoOpen = new JoystickButton (thirdStick, 9);
-		JoystickButton servoClose = new JoystickButton (thirdStick, 8);
+//		JoystickButton scoopReceive = new JoystickButton (thirdStick, 3);
+//		JoystickButton scoopPlace = new JoystickButton (thirdStick, 2);
+//	JoystickButton scaleUp = new JoystickButton (thirdStick, 5);
+//		JoystickButton scaleDown = new JoystickButton (thirdStick, 6);
+//		JoystickButton servoOpen = new JoystickButton (thirdStick, 9);
+//		JoystickButton servoClose = new JoystickButton (thirdStick, 8);
 	
-		scoopReceive.whileHeld(new PlaceGear()); 
-		scoopPlace.whileHeld(new ReceiveGear());
-		scaleUp.whileHeld(new ScaleUp());
-		scaleDown.whileHeld(new ScaleDown());
-		servoOpen.whenPressed(new OpenServo());
-		servoClose.whenPressed(new CloseServo());
+//		scoopReceive.whileHeld(new PlaceGear()); 
+//		scoopPlace.whileHeld(new ReceiveGear());
+//		scaleUp.whileHeld(new ScaleUp());
+//		scaleDown.whileHeld(new ScaleDown());
+//		servoOpen.whenPressed(new OpenServo());
+//		servoClose.whenPressed(new CloseServo());
 		
 	}
 	
