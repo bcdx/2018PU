@@ -19,7 +19,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static DriveTrain drivetrain;
 	
-	Thread visionThrea;d
+	Thread visionThread;
 	
 //		// maximum distance in inches we expect the robot to see
 //		private static final double kMaxDistance = 24.0;
