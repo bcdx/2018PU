@@ -2,9 +2,6 @@ package org.usfirst.frc.team4856.robot.commands;
 
 import org.usfirst.frc.team4856.robot.Robot;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import edu.wpi.first.wpilibj.AnalogGyro;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -30,7 +27,6 @@ public class AutonomousMode extends CommandGroup {
 
     public AutonomousMode() {
     	timer = new Timer();
-  
         // Use requires() here to declare subsystem dependencies; eg. requires(chassis);
     }
 
@@ -41,42 +37,34 @@ public class AutonomousMode extends CommandGroup {
     	
 		//Robot.drivetrain.left1.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Robot.drivetrain.left2.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10); 
-//		//Robot.drivetrain.right1.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10); 
-//		Robot.drivetrain.right2.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
+		//Robot.drivetrain.right1.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10); 
+		//Robot.drivetrain.right2.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 10);
 		//Robot.drivetrain.left1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10); 
 		//Robot.drivetrain.left2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10); 
 		//Robot.drivetrain.right1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10); 
 		//Robot.drivetrain.right2.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		
-//    	System.out.println("L38");
-	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0.5);
-	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0.5);
-	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, -0.5);
-	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, -0.5);
-//    	System.out.println("L43");
+	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0.3);
+	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0.3);
+	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, -0.3);
+	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, -0.3);
 
     }
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {	
     	
-		
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//		LocalDateTime now = LocalDateTime.now();
 		Timer.delay(3.0);
 //		System.out.println(dtf.format(now));
-		//System.out.println(Robot.drivetrain.right1.getSelectedSensorPosition(0));        // getSelectedSensorPosition(int pidIdx) 0 for primary closed-loop
+		System.out.println("position: " + Robot.drivetrain.right1.getSelectedSensorPosition(0));        // getSelectedSensorPosition(int pidIdx) 0 for primary closed-loop
 //   	Timer.delay(2.8); move forward (left and right position)
-//		GyroSample();
-//		System.out.println("i am not a failure");
-
 		
     }
 
     
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return timer.get() > 300; //stops autonomous mode when timer is longer than 15 seconds
+    	return timer.get() > 300; //stops autonomous mode when timer is longer than 300 seconds
     }
     
     // Called once after isFinished returns true
@@ -86,7 +74,6 @@ public class AutonomousMode extends CommandGroup {
 	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
-//	    System.out.println("can i possibly be functional");
     }
 
     // Called when another command which requires one or more of the same subsystems is scheduled to run

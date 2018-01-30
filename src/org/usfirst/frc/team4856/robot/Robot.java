@@ -21,9 +21,9 @@ public class Robot extends IterativeRobot {
 	
 	Thread visionThread;
 	
-//		// maximum distance in inches we expect the robot to see
+//		maximum distance in inches we expect the robot to see
 //		private static final double kMaxDistance = 24.0;
-//		// factor to convert sensor values to a distance in inches
+//		factor to convert sensor values to a distance in inches
 //		private static final double kValueToInches = 0.125;
 //
 //		// proportional speed constant
@@ -54,23 +54,17 @@ public class Robot extends IterativeRobot {
      */
     
     public void robotInit() {
-		
 		oi = new OI();
-		
+			
 		//TODO: Replace with new autonomous
 		autonomousMode = new AutonomousMode(); 
-    	System.out.println("L62");
-
-      
-}
+    }
 
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-    /**
-     * This function is called periodically during autonomous
-    */
+    //This function is called periodically during autonomous
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
@@ -98,10 +92,8 @@ public class Robot extends IterativeRobot {
 	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
     }
 
-    /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
-     */
+    // This function is called when the disabled button is hit. You can use it to reset subsystems before shutting down.
+
     public void disabledInit(){
     	
     }
@@ -110,8 +102,9 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
        Scheduler.getInstance().run();
    
-       arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
-		
+      arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
+      Timer.delay(0.05); //THIS IS IMPORTANT -> the robot NEEDS a wait period in between the time it receives information from the joystick, otherwise it gets overloaded with information and shuts down. We tried 0.01 seconds which was too little so keep 0.05
+      //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
     }
     
     public void arcadeDrive(double throttleValue, double turnValue) {
@@ -140,7 +133,6 @@ public class Robot extends IterativeRobot {
 			double distance = raw * (double)(5.0/4.0);
 			System.out.println(distance);
 		}
-		
 	}
     
 }
