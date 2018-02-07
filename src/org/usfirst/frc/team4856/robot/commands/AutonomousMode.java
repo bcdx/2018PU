@@ -14,26 +14,27 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
 
 public class AutonomousMode extends CommandGroup {
 	public ADXRS450_Gyro gyroSPI = new ADXRS450_Gyro();
 	Timer timer;
-	
 	double gyro_adj = 0.0;
-	double temp =.4;
-	double k1 = .002;
+	double temp = 0.4;
+	double k1 = 0.002;
 	int epsilon = 2;
+	
+	public void resetEncoders() {
+		Robot.drivetrain.left2.setSelectedSensorPosition(0, 0, 0);
+		Robot.drivetrain.right2.setSelectedSensorPosition(0, 0, 0);
+	}
 
 	public void driveStraight(double time){
 		double currentTime = timer.get();
 		
-		while (timer.get() < currentTime + time){ ///outer if loop
+		while (timer.get() < currentTime + time){ 
 		    	
 				Timer.delay(0.05);
-				if (gyroSPI.getAngle()>1) { //inner if/else statements that make the robot drive straight for the first 3 seconds
+				if (gyroSPI.getAngle()>1) { 
 					gyro_adj+=-k1;
 				}
 				else if (gyroSPI.getAngle()<-1){
@@ -80,35 +81,60 @@ public class AutonomousMode extends CommandGroup {
     protected void initialize() {
     	timer.reset();
     	timer.start();
-    	
     	gyroSPI.reset();
-
-		
-	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, temp);
-	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, temp);
-	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, -temp);
-	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, -temp);
+    	resetEncoders();
+    	Timer.delay(0.1); 
+    	System.out.println("initial encoder position: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+    	
+    	
+	   	//Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0.1);
+	    //Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0.1);
+	    //Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
+	    //Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
 	    
-	    driveStraight(5);
-		turn(90);
-	    driveStraight(1);
-	    stop();
+	    Timer.delay(10.0);
+	    System.out.println("encoder +2: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+	    
+	    //Timer.delay(2.0);
+	    //System.out.println("encoder +4: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+	    
+	    //Timer.delay(2.0);
+	    //System.out.println("encoder +6: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+	    
+	    //Timer.delay(2.0);
+	    //System.out.println("encoder +8: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+	    
+	    //stop();
+	    resetEncoders();
+	    Timer.delay(2.0);
+	    System.out.println("encoder +end: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+	    
+	   // System.out.println("encoder position: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
+
+//	    driveStraight(5);
+//		turn(90);
+//	    driveStraight(1);
+//	    stop();
     }
     
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {		
+    protected void execute() {	
+//    	double prevReading = Robot.drivetrain.left2.getSelectedSensorPosition(0);
+//    	Timer.delay(0.5);
+//    	double currentReading = Robot.drivetrain.left2.getSelectedSensorPosition(0);
+//    	double changeReading = currentReading - prevReading;
+//    	System.out.println("position change: " + changeReading);
+//    	System.out.println("current position: " + currentReading);
 	}
-    
-           
-    
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return timer.get() > 300; //stops autonomous mode when timer is longer than 300 seconds
+    	return timer.get() > 20; //stops autonomous mode when timer is longer than 300 seconds
     }
     
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("end end");
+    	System.out.println("end");
 	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
