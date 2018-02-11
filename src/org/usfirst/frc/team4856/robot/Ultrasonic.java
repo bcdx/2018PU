@@ -1,7 +1,7 @@
 //package org.usfirst.frc.team4856.robot;
 //
 //
-//import edu.wpi.first.wpilibj.*;
+//-
 //import edu.wpi.first.wpilibj.AnalogChannel;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 //
@@ -25,7 +25,7 @@
 //		distance_range = 60.0 - min_distance;
 //    }
 //    //constructor
-//    public Ultrasonic(int _channel, boolean _use_units, double _min_voltage,
+//    public Ultrasonic(int _channel, boolean _use_units, double _min_voltage,+
 //            double _max_voltage, double _min_distance, double _max_distance) {
 //        channel = new AnalogChannel();
 //        //only use unit-specific variables if we're using units

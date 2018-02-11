@@ -1,6 +1,12 @@
 package org.usfirst.frc.team4856.robot.commands;
 
 import org.usfirst.frc.team4856.robot.Robot;
+import org.usfirst.frc.team4856.robot.RobotMap;
+import org.usfirst.frc.team4856.robot.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -19,49 +25,82 @@ public class AutonomousMode extends CommandGroup {
 	public ADXRS450_Gyro gyroSPI = new ADXRS450_Gyro();
 	Timer timer;
 	double gyro_adj = 0.0;
-	double temp = 0.4;
+	double temp = 0.5;
 	double k1 = 0.002;
-	int epsilon = 2;
+	int epsilon = 2;	
 	
 	public void resetEncoders() {
 		Robot.drivetrain.left2.setSelectedSensorPosition(0, 0, 0);
 		Robot.drivetrain.right2.setSelectedSensorPosition(0, 0, 0);
 	}
-
-	public void driveStraight(double time){
-		double currentTime = timer.get();
-		
-		while (timer.get() < currentTime + time){ 
-		    	
-				Timer.delay(0.05);
-				if (gyroSPI.getAngle()>1) { 
-					gyro_adj+=-k1;
-				}
-				else if (gyroSPI.getAngle()<-1){
-					gyro_adj+=k1;
-				}
-				else{
-					gyro_adj=0;
-				}
-				
-				Robot.drivetrain.left1.set(ControlMode.PercentOutput, temp+gyro_adj);
-			    Robot.drivetrain.left2.set(ControlMode.PercentOutput, temp+gyro_adj);
-				System.out.println("angle:" + gyroSPI.getAngle());  
-			    System.out.println("gyro adjustment:" + gyro_adj);
-			}
-		
+	
+	public double getLeftEncoderDistance() {
+		return DriveTrain.left2.getSelectedSensorPosition(0) * RobotMap.inchesPerPulse;
 	}
 	
-	public void turn(double angle){
-		while (gyroSPI.getAngle()< angle){ //outer end of if loop. Hopefully makes robot turn 90 degrees
-			Robot.drivetrain.left1.set(ControlMode.PercentOutput,0.15);
-			Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0.15);
-			Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
-			Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
-			Timer.delay(0.5);
+	public double getRightEncoderDistance() {
+		return DriveTrain.right2.getSelectedSensorPosition(0) * RobotMap.inchesPerPulse;
+	}
+	
+	public void driveDistance(double targetDistance, double speed){
+		resetEncoders();
+		while (getRightEncoderDistance() > 1){
+			System.out.println("reset");
+		}
+		System.out.println("current distance: " + getRightEncoderDistance());
+	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, speed);
+	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, speed);
+	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, -speed);
+	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, -speed);
+		while (getRightEncoderDistance() < targetDistance){
+			Timer.delay(0.05);
+			if (gyroSPI.getAngle()>1) { 
+				gyro_adj+=-k1;
+			}
+			else if (gyroSPI.getAngle()<-1){
+				gyro_adj+=k1;
+			}
+			else{
+				gyro_adj=0;
+			}
+			
+			Robot.drivetrain.left1.set(ControlMode.PercentOutput, speed+gyro_adj);
+		    Robot.drivetrain.left2.set(ControlMode.PercentOutput, speed+gyro_adj);
+//		    Robot.drivetrain.right1.set(ControlMode.PercentOutput, -(speed+gyro_adj));
+//		    Robot.drivetrain.right2.set(ControlMode.PercentOutput, -(speed+gyro_adj));
+			System.out.println("angle: " + gyroSPI.getAngle());  
+		    System.out.println("gyro adjustment: " + gyro_adj);
+		    System.out.println("distance in inches: "+ getRightEncoderDistance());
+		}
+		stop();
+	}
+	
+	public void turnRight(double angle, double speed){
+		gyroSPI.reset();
+		while (gyroSPI.getAngle() < angle){ 
+			Robot.drivetrain.left1.set(ControlMode.PercentOutput, speed);
+			Robot.drivetrain.left2.set(ControlMode.PercentOutput, speed);
+			Robot.drivetrain.right1.set(ControlMode.PercentOutput, speed);
+			Robot.drivetrain.right2.set(ControlMode.PercentOutput, speed);
+			Timer.delay(0.02);
 			System.out.println("angle:" + gyroSPI.getAngle());  
 		    System.out.println("gyro adjustment:" + gyro_adj);
 		}
+		stop();
+	}
+	
+	public void turnLeft(double angle, double speed){
+		gyroSPI.reset();
+		while (gyroSPI.getAngle() > -angle){
+			Robot.drivetrain.left1.set(ControlMode.PercentOutput, -speed);
+			Robot.drivetrain.left2.set(ControlMode.PercentOutput, -speed);
+			Robot.drivetrain.right1.set(ControlMode.PercentOutput, -speed);
+			Robot.drivetrain.right2.set(ControlMode.PercentOutput, -speed);
+			Timer.delay(0.02);
+			System.out.println("angle:" + gyroSPI.getAngle());  
+		    System.out.println("gyro adjustment:" + gyro_adj);
+		}
+		stop();
 	}
 	
 	public void stop(){
@@ -73,9 +112,10 @@ public class AutonomousMode extends CommandGroup {
 
     public AutonomousMode() {
     	timer = new Timer();
-    	
         // Use requires() here to declare subsystem dependencies; eg. requires(chassis);
     }
+    
+		
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -84,47 +124,15 @@ public class AutonomousMode extends CommandGroup {
     	gyroSPI.reset();
     	resetEncoders();
     	Timer.delay(0.1); 
-    	System.out.println("initial encoder position: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-    	
-    	
-	   	//Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0.1);
-	    //Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0.1);
-	    //Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
-	    //Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
+    	System.out.println("initial encoder position: " + getRightEncoderDistance());
 	    
-	    Timer.delay(10.0);
-	    System.out.println("encoder +2: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-	    
-	    //Timer.delay(2.0);
-	    //System.out.println("encoder +4: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-	    
-	    //Timer.delay(2.0);
-	    //System.out.println("encoder +6: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-	    
-	    //Timer.delay(2.0);
-	    //System.out.println("encoder +8: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-	    
-	    //stop();
-	    resetEncoders();
-	    Timer.delay(2.0);
-	    System.out.println("encoder +end: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-	    
-	   // System.out.println("encoder position: " + Robot.drivetrain.left2.getSelectedSensorPosition(0));
-
-//	    driveStraight(5);
-//		turn(90);
-//	    driveStraight(1);
-//	    stop();
+    	driveDistance(120, 0.5);
+    	turnRight(90, 0.2);
+    	driveDistance(60, 0.4);
     }
     
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {	
-//    	double prevReading = Robot.drivetrain.left2.getSelectedSensorPosition(0);
-//    	Timer.delay(0.5);
-//    	double currentReading = Robot.drivetrain.left2.getSelectedSensorPosition(0);
-//    	double changeReading = currentReading - prevReading;
-//    	System.out.println("position change: " + changeReading);
-//    	System.out.println("current position: " + currentReading);
 	}
 
     // Make this return true when this Command no longer needs to run execute()
@@ -135,10 +143,7 @@ public class AutonomousMode extends CommandGroup {
     // Called once after isFinished returns true
     protected void end() {
     	System.out.println("end");
-	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
+    	stop();
     }
 
     // Called when another command which requires one or more of the same subsystems is scheduled to run

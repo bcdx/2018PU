@@ -13,15 +13,15 @@ public interface RobotMap {
 	
 	public static final int LeftFrontMotor = 1;
 	public static final int LeftBackMotor = 2;
-	public static final int RightFrontMotor = 4;
-	public static final int RightBackMotor = 3;
+	public static final int RightFrontMotor = 3;
+	public static final int RightBackMotor = 4;
 	
 	// ENCODER CONSTANTS
 	
-	public static final double wheelDiameter = 0; // need to determine this
-	public static final int pulsesPerRevolution = 0; // need to determine this
+	public static final double wheelDiameter = 6; 
+	public static final int pulsesPerRevolution = 4096;
 	public static final double inchesPerRevolution = Math.PI * wheelDiameter;
-	public static final double inchesPerPulse = inchesPerRevolution * pulsesPerRevolution;
+	public static final double inchesPerPulse = inchesPerRevolution / pulsesPerRevolution;
     
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

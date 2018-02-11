@@ -26,9 +26,13 @@ public class DriveTrain extends Subsystem {
 	
 	// ENCODER DISTANCE
 	
-	public double getLeftEncoderDistance() {
-		return Robot.drivetrain.left2.getSelectedSensorPosition(0) * RobotMap.inchesPerPulse;
-	}
+//	public double getLeftEncoderDistance() {
+//		return DriveTrain.left2.getSelectedSensorPosition(0) * RobotMap.inchesPerPulse;
+//	}
+//	
+//	public double getRightEncoderDistance() {
+//		return DriveTrain.right2.getSelectedSensorPosition(0) * RobotMap.inchesPerPulse;
+//	}
 	
 //	public void resetEncoders() {
 //		Robot.drivetrain.left2.setSelectedSensorPosition(0, 0, 0);
