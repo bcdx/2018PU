@@ -83,7 +83,7 @@ public class AutonomousMode extends CommandGroup {
 		while (gyroSPI.getAngle() < initialAngle + angle){ 
 			Timer.delay(0.001);
 		//	System.out.println("angle:" + gyroSPI.getAngle());  
-		 //   System.out.println("gyro adjustment:" + gyro_adj);
+		//  System.out.println("gyro adjustment:" + gyro_adj);
 		}
 		stop();
 	}
@@ -126,7 +126,7 @@ public class AutonomousMode extends CommandGroup {
     	System.out.println("initial encoder position: " + getRightEncoderDistance());
 	    
     	driveDistance(182.5, 0.5);
-   	Timer.delay(5);
+    	Timer.delay(5);
     	turnRight(90, 0.1);
     	Timer.delay(5);
     	driveDistance(60, 0.4);
