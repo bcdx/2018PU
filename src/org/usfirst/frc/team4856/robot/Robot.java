@@ -115,14 +115,14 @@ public class Robot extends IterativeRobot {
     	leftMtr = throttleValue + turnValue;
     	rightMtr = throttleValue - turnValue;
     	
-    	System.out.println("L123"+turnValue);
+    	//System.out.println("L123"+turnValue);
 
         drivetrain.right1.set(ControlMode.PercentOutput, leftMtr*1);
         drivetrain.right2.set(ControlMode.PercentOutput, leftMtr*1);
         drivetrain.left1.set(ControlMode.PercentOutput, -1*rightMtr);
         drivetrain.left2.set(ControlMode.PercentOutput, -1*rightMtr);
         
-        System.out.println("L132"+turnValue);
+       // System.out.println("L132"+turnValue);
     }
     
     private class MyPidOutput implements PIDOutput {
