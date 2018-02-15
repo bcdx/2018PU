@@ -192,6 +192,12 @@ public class AutonomousMode extends CommandGroup {
     	
     	driveDistance(120, 0.2);
     	System.out.println(timer.get());
+    	Timer.delay(0.1); 
+    	System.out.println("initial encoder position: " + getRightEncoderDistance());
+	    
+    	driveDistance(120, 0.5);
+    	turnRight(90, 0.2);
+    	driveDistance(60, 0.4);
     }
     
     // Called repeatedly when this Command is scheduled to run
