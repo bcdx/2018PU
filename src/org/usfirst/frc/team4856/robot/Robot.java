@@ -18,6 +18,7 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 	public static DriveTrain drivetrain;
+	public static ConveyorBelt conveyorBelt;
 	
 	Thread visionThread;
 	
@@ -103,6 +104,7 @@ public class Robot extends IterativeRobot {
        Scheduler.getInstance().run();
    
       arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
+      conveyorBelt.setSpeed(oi.beltStick.getY());
       Timer.delay(0.05); //THIS IS IMPORTANT -> the robot NEEDS a wait period in between the time it receives information from the joystick, otherwise it gets overloaded with information and shuts down. We tried 0.01 seconds which was too little so keep 0.05
       //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
     }

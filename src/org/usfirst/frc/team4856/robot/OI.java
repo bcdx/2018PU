@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 	//declares variables of Joystick type (i.e. lefStick is an instance of Joystick.)
 	//0, 1, and 2 refer to USB ports
-	public Joystick leftStick = new Joystick(1); //LEFT, RIGHT --> facing the same direction as the robot
-	// public Joystick rightStick = new Joystick(0);
+	public Joystick leftStick = new Joystick(0); //LEFT, RIGHT --> facing the same direction as the robot
+	public Joystick beltStick = new Joystick(1);
 
 	public OI() {
 	}
