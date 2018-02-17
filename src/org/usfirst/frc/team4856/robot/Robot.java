@@ -109,9 +109,9 @@ public class Robot extends IterativeRobot {
       if (Math.abs(oi.beltStick.getY()) < 0.5) {
     	 Robot.conveyor_belt.setSpeed(0); 
       } else if (oi.beltStick.getY() > 0.5) {
-    	  Robot.conveyor_belt.setSpeed(0.3);
+    	  Robot.conveyor_belt.setSpeed(-0.85*oi.beltStick.getY());
       } else if (oi.beltStick.getY() < -0.5) {
-    	  Robot.conveyor_belt.setSpeed(-0.3);
+    	  Robot.conveyor_belt.setSpeed(-0.85*oi.beltStick.getY());
       } 
       Timer.delay(0.05); //THIS IS IMPORTANT -> the robot NEEDS a wait period in between the time it receives information from the joystick, otherwise it gets overloaded with information and shuts down. We tried 0.01 seconds which was too little so keep 0.05
       //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
@@ -127,11 +127,17 @@ public class Robot extends IterativeRobot {
     	rightMtr = throttleValue - turnValue;
     	
     	//System.out.println("L123"+turnValue);
-
-        drivetrain.right1.set(ControlMode.PercentOutput, leftMtr*1);
-        drivetrain.right2.set(ControlMode.PercentOutput, leftMtr*1);
-        drivetrain.left1.set(ControlMode.PercentOutput, -1*rightMtr);
-        drivetrain.left2.set(ControlMode.PercentOutput, -1*rightMtr);
+    	if (Math.abs(oi.leftStick.getY()) < 0.1) {
+    		drivetrain.right1.set(ControlMode.PercentOutput, 0);
+	        drivetrain.right2.set(ControlMode.PercentOutput, 0);
+	        drivetrain.left1.set(ControlMode.PercentOutput, 0);
+	        drivetrain.left2.set(ControlMode.PercentOutput, 0);
+    	} else if (Math.abs(oi.leftStick.getY())> 0.1) {
+	        drivetrain.right1.set(ControlMode.PercentOutput, leftMtr*0.85);
+	        drivetrain.right2.set(ControlMode.PercentOutput, leftMtr*0.85);
+	        drivetrain.left1.set(ControlMode.PercentOutput, -0.85*rightMtr);
+	        drivetrain.left2.set(ControlMode.PercentOutput, -0.85*rightMtr);
+    	} 
         
        // System.out.println("L132"+turnValue);
     }

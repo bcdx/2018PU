@@ -16,7 +16,7 @@ public class ConveyorBelt extends Subsystem {
 	}
 	
 	public void setSpeed(double speed) {
-		System.out.println(speed);
+//		System.out.println(speed);
 		beltMotor.set(speed);
 	}
 
