@@ -18,7 +18,7 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 	public static DriveTrain drivetrain;
-	public static ConveyorBelt conveyorBelt;
+	public static ConveyorBelt conveyor_belt;
 	
 	Thread visionThread;
 	
@@ -56,6 +56,7 @@ public class Robot extends IterativeRobot {
     
     public void robotInit() {
 		oi = new OI();
+		conveyor_belt = new ConveyorBelt();
 			
 		//TODO: Replace with new autonomous
 		autonomousMode = new AutonomousMode(); 
@@ -87,6 +88,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	autonomousMode.cancel();
+    	System.out.println("cancel autonomous mode");
     	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0);
 	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
@@ -104,9 +106,16 @@ public class Robot extends IterativeRobot {
        Scheduler.getInstance().run();
    
       arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
-      conveyorBelt.setSpeed(oi.beltStick.getY());
+      if (Math.abs(oi.beltStick.getY()) < 0.5) {
+    	 Robot.conveyor_belt.setSpeed(0); 
+      } else if (oi.beltStick.getY() > 0.5) {
+    	  Robot.conveyor_belt.setSpeed(0.3);
+      } else if (oi.beltStick.getY() < -0.5) {
+    	  Robot.conveyor_belt.setSpeed(-0.3);
+      } 
       Timer.delay(0.05); //THIS IS IMPORTANT -> the robot NEEDS a wait period in between the time it receives information from the joystick, otherwise it gets overloaded with information and shuts down. We tried 0.01 seconds which was too little so keep 0.05
       //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
+   
     }
     
     public void arcadeDrive(double throttleValue, double turnValue) {

@@ -5,20 +5,12 @@ import org.usfirst.frc.team4856.robot.RobotMap;
 import org.usfirst.frc.team4856.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.PIDController;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutonomousMode extends CommandGroup {
@@ -27,7 +19,7 @@ public class AutonomousMode extends CommandGroup {
 	double gyro_adj = 0.0;
 	double temp = 0.5;
 	double k1 = 0.002;
-	int epsilon = 2;	
+	int epsilon = 2;
 	
 	public void resetEncoders() {
 		Robot.drivetrain.left2.setSelectedSensorPosition(0, 0, 0);
@@ -90,30 +82,6 @@ public class AutonomousMode extends CommandGroup {
 		stop();
 	}
 	
-//	public void driveDistance(double targetDistance, double speed){
-//		double currentDistance = getRightEncoderDistance();
-//	   	setLeftSpeed(speed);
-//	    setRightSpeed(speed);
-//
-//		while (getRightEncoderDistance() < currentDistance + targetDistance){
-//			Timer.delay(0.05);
-//			if (gyroSPI.getAngle()>1) { 
-//				gyro_adj+=-k1;
-//			}
-//			else if (gyroSPI.getAngle()<-1){
-//				gyro_adj+=k1;
-//			}
-//			else{
-//				gyro_adj=0;
-//			}
-//			
-//			setLeftSpeed(speed+gyro_adj);
-//		// System.out.println("angle: " + gyroSPI.getAngle());  
-//		// System.out.println("gyro adjustment: " + gyro_adj);
-//		// System.out.println("distance in inches: "+ getRightEncoderDistance());
-//		}
-//		stop();
-//	}
 	
 	public void turnRight(double angle, double speed){
 		double initialAngle = gyroSPI.getAngle();
@@ -159,36 +127,45 @@ public class AutonomousMode extends CommandGroup {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	
+    	System.out.println("initializing");
+    	
     	timer.reset();
     	timer.start();
     	gyroSPI.reset();
     	resetEncoders();
-    	Timer.delay(0.01);
+    	Timer.delay(0.05); //0.01 before
     	System.out.println("initial encoder position: " + getRightEncoderDistance());
     	
-    	String gameData = DriverStation.getInstance().getGameSpecificMessage();
+//    	String gameData = DriverStation.getInstance().getGameSpecificMessage();
     	
-    	if (gameData.length() > 0) {
-    		if (gameData.charAt(0) == 'L') {
-    			//FROM LEFT
-    			driveDistance(120, 0.2);
-    			turnRight(90, 0.15);
-    			//FROM CENTER
-    			driveDistance(50, 0.2);
-    			turnLeft(90, 0.15);
-    			driveDistance(120, 0.2);
-    			turnRight(90, 0.15);
-    			driveDistance(80, 0.2);
-    			turnRight(90, 0.15);
-    			//FROM RIGHT
-    			driveDistance(120, 0.2);
-    			turnLeft(90, 0.15); 
-    		} else if (gameData.charAt(0) == 'R') {
-    			//FROM LEFT
-    			//FROM CENTER
-    			//FROM RIGHT
-    		}
-    	}
+//    	if (gameData.length() > 0) {
+//    		if (gameData.charAt(0) == 'L') {
+//    			//FROM LEFT
+//    			driveDistance(120, 0.2);
+//    			turnRight(90, 0.15);
+//    			//FROM CENTER
+//    			driveDistance(50, 0.2);
+//    			turnLeft(90, 0.15);s
+//    			driveDistance(120, 0.2);
+//    			turnRight(90, 0.15);
+//    			driveDistance(80, 0.2);
+//    			turnRight(90, 0.15);
+//    			//FROM RIGHT
+//    			driveDistance(120, 0.2);
+//    			turnLeft(90, 0.15); 
+//    		} else if (gameData.charAt(0) == 'R') {
+//    			//FROM LEFT
+//    			//FROM CENTER
+//    			//FROM RIGHT
+//    		}
+// 	}
+//    	
+    	
+/*    	
+    	beltMotor.set(0.75);
+    	Timer.delay(10);
+    	beltMotor.set(0);
     	
     	driveDistance(120, 0.2);
     	System.out.println(timer.get());
@@ -198,6 +175,8 @@ public class AutonomousMode extends CommandGroup {
     	driveDistance(120, 0.5);
     	turnRight(90, 0.2);
     	driveDistance(60, 0.4);
+    	
+ */  	
     }
     
     // Called repeatedly when this Command is scheduled to run
@@ -206,7 +185,8 @@ public class AutonomousMode extends CommandGroup {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return timer.get() > 20; //stops autonomous mode when timer is longer than 300 seconds
+    	System.out.println("is finished");
+    	return timer.get() > 5; //stops autonomous mode when timer is longer than 300 seconds
     }
     
     // Called once after isFinished returns true
@@ -218,5 +198,6 @@ public class AutonomousMode extends CommandGroup {
     // Called when another command which requires one or more of the same subsystems is scheduled to run
     protected void interrupted() {
     	end();
+    	System.out.println("interrupted");
     }
 }

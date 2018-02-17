@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4856.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -9,15 +8,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class ConveyorBelt extends Subsystem {
-	private SpeedController scalerMotor;
+	public SpeedController beltMotor;
 	
 	public ConveyorBelt () {
 		super();                                                                                                                                                                                      
-		scalerMotor = new Spark (0);
+		beltMotor = new Victor(0);
 	}
 	
 	public void setSpeed(double speed) {
-		scalerMotor.set(speed);
+		System.out.println(speed);
+		beltMotor.set(speed);
 	}
 
     // Put methods for controlling this subsystem
