@@ -162,10 +162,7 @@ public class AutonomousMode extends CommandGroup {
 // 	}
 //    	
     	
-/*    	
-    	beltMotor.set(0.75);
-    	Timer.delay(10);
-    	beltMotor.set(0);
+/*
     	
     	driveDistance(120, 0.2);
     	System.out.println(timer.get());
