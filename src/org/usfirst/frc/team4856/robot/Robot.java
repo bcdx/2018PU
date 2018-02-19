@@ -20,6 +20,12 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain drivetrain;
 	public static ConveyorBelt conveyor_belt;
 	
+	public static Command autonomousCommand1;
+	public static Command autonomousCommand2;
+	
+	
+	
+	
 	Thread visionThread;
 	
 //		maximum distance in inches we expect the robot to see
@@ -55,11 +61,15 @@ public class Robot extends IterativeRobot {
      */
     
     public void robotInit() {
-		oi = new OI();
 		conveyor_belt = new ConveyorBelt();
+		drivetrain = new DriveTrain();
+		oi = new OI();
 			
 		//TODO: Replace with new autonomous
 		autonomousMode = new AutonomousMode(); 
+		autonomousCommand1 = new AutonomousConveyor(0.5, 3);
+		autonomousCommand2 = new DriveStraight(120, 0.5);
+		
     }
 
 	public void disabledPeriodic() {
@@ -89,10 +99,7 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
     	autonomousMode.cancel();
     	System.out.println("cancel autonomous mode");
-    	Robot.drivetrain.left1.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.right1.set(ControlMode.PercentOutput, 0);
-	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
+    	Robot.drivetrain.stop();
     }
 
     // This function is called when the disabled button is hit. You can use it to reset subsystems before shutting down.
@@ -105,51 +112,27 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
        Scheduler.getInstance().run();
    
-      arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
+      Robot.drivetrain.arcadeDrive(oi.leftStick.getY(), oi.leftStick.getX());
       if (Math.abs(oi.beltStick.getY()) < 0.5) {
     	 Robot.conveyor_belt.setSpeed(0); 
       } else if (oi.beltStick.getY() > 0.5) {
-    	  Robot.conveyor_belt.setSpeed(-0.85*oi.beltStick.getY());
+    	  Robot.conveyor_belt.setSpeed(-0.75*oi.beltStick.getY());
       } else if (oi.beltStick.getY() < -0.5) {
-    	  Robot.conveyor_belt.setSpeed(-0.85*oi.beltStick.getY());
+    	  Robot.conveyor_belt.setSpeed(-0.75*oi.beltStick.getY());
       } 
       Timer.delay(0.05); //THIS IS IMPORTANT -> the robot NEEDS a wait period in between the time it receives information from the joystick, otherwise it gets overloaded with information and shuts down. We tried 0.01 seconds which was too little so keep 0.05
       //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
    
     }
     
-    public void arcadeDrive(double throttleValue, double turnValue) {
-    	
-    	double leftMtr;
-    	double rightMtr;
-    	
-    	leftMtr = throttleValue + turnValue;
-    	rightMtr = throttleValue - turnValue;
-    	
-    	//System.out.println("L123"+turnValue);
-    	if (Math.abs(oi.leftStick.getY()) < 0.1) {
-    		drivetrain.right1.set(ControlMode.PercentOutput, 0);
-	        drivetrain.right2.set(ControlMode.PercentOutput, 0);
-	        drivetrain.left1.set(ControlMode.PercentOutput, 0);
-	        drivetrain.left2.set(ControlMode.PercentOutput, 0);
-    	} else if (Math.abs(oi.leftStick.getY())> 0.1) {
-	        drivetrain.right1.set(ControlMode.PercentOutput, leftMtr*0.85);
-	        drivetrain.right2.set(ControlMode.PercentOutput, leftMtr*0.85);
-	        drivetrain.left1.set(ControlMode.PercentOutput, -0.85*rightMtr);
-	        drivetrain.left2.set(ControlMode.PercentOutput, -0.85*rightMtr);
-    	} 
-        
-       // System.out.println("L132"+turnValue);
-    }
-    
-    private class MyPidOutput implements PIDOutput {
-		@Override
-		public void pidWrite(double output) {
-			AnalogInput ultrasonic = new AnalogInput(0);
-			int raw = ultrasonic.getValue();
-			double distance = raw * (double)(5.0/4.0);
-			System.out.println(distance);
-		}
-	}
+//    private class MyPidOutput implements PIDOutput {
+//		@Override
+//		public void pidWrite(double output) {
+//			AnalogInput ultrasonic = new AnalogInput(0);
+//			int raw = ultrasonic.getValue();
+//			double distance = raw * (double)(5.0/4.0);
+//			System.out.println(distance);
+//		}
+//	}
     
 }
