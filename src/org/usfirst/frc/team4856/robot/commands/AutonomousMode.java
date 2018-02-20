@@ -94,6 +94,7 @@ public class AutonomousMode extends CommandGroup {
 				toggle =true;
 					
 			}
+			//however, in teleop, this causes the robot to not respond to the joysticks after it encounters an obstacle, so fix this??
 			
 			if (toggle == true){
 				setLeftSpeed(speed);
@@ -209,16 +210,15 @@ public class AutonomousMode extends CommandGroup {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-//    	
+    	
 //    	System.out.println("initializing");
 //    	
 //    	System.out.println(" s conveying");
-//////    	new AutonomousConveyor(0.5,5.0);
-//    	autonConveyor(0.5, 5.0);
+//    	new AutonomousConveyor(0.5,5.0);
 //    	System.out.println("e conveying");
 //    	
-    	timer.reset();
-    	timer.start();
+//    	timer.reset();
+//    	timer.start();
 //    	gyroSPI.reset();
 //    	resetEncoders();
 //    	Timer.delay(0.05); //0.01 before
@@ -249,27 +249,21 @@ public class AutonomousMode extends CommandGroup {
 // 	}
     	
 
-    	//driveDistance(120, 0.5);
-		//turnLeft(90, 0.15);
-    	//driveDistance(21, 0.3);
-		//autonConveyor(0.5, 5);
-    	
-/*
- 
-    	driveDistance(120, 0.2);
-    	System.out.println(timer.get());
-    	Timer.delay(0.1); 
-    	System.out.println("initial encoder position: " + getRightEncoderDistance());
-	    
     	driveDistance(120, 0.5);
-    	turnRight(90, 0.2);
-    	driveDistance(60, 0.4);
-    	
- */ 
+		turnLeft(90, 0.15);
+    	driveDistance(21, 0.3);
+		autonConveyor(0.3, 2.0);
+		
+    	 
+    	//printUltraValues();
+    	//driveDistance_obstruction(600, 0.5);
     	//printUltraValues();
     	//driveDistance_obstruction(120, 0.5);
-    	Robot.autonomousCommand1.start(); //conveyor belt
-    	Robot.autonomousCommand2.start(); //drivestraight
+    	
+    	//Robot.autonomousCommand2.start(); //drivestraight
+    	//turn
+    	//Robot.autonomousCommand3.start();//drivestraight
+    	//Robot.autonomousCommand1.start(); //conveyor belt
     	
     }
     
