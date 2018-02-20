@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
 	
 	public static Command autonomousCommand1;
 	public static Command autonomousCommand2;
+	public static Command autonomousCommand3;
 	
 	
 	
@@ -61,14 +62,16 @@ public class Robot extends IterativeRobot {
      */
     
     public void robotInit() {
+    	
 		conveyor_belt = new ConveyorBelt();
 		drivetrain = new DriveTrain();
 		oi = new OI();
 			
 		//TODO: Replace with new autonomous
 		autonomousMode = new AutonomousMode(); 
-		autonomousCommand1 = new AutonomousConveyor(0.5, 3);
-		autonomousCommand2 = new DriveStraight(120, 0.5);
+		autonomousCommand1 = new AutonomousConveyor(0.3, 2.0);
+		//autonomousCommand2 = new DriveStraight(120, 0.5);
+		//autonomousCommand3 = new DriveStraight(21, 0.3);
 		
     }
 
@@ -79,6 +82,7 @@ public class Robot extends IterativeRobot {
     //This function is called periodically during autonomous
 
     public void autonomousInit() {
+
         // schedule the autonomous command (example)
     	// if (the autonomousCommand does not return a null set (is not teleop), then run the autonomousCommand
     	 autonomousMode.start();	 
@@ -97,8 +101,10 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-    	autonomousMode.cancel();
-    	System.out.println("cancel autonomous mode");
+    	if (autonomousMode != null){
+    		System.out.println("kill command has run");
+    		autonomousMode.cancel();
+    	}
     	Robot.drivetrain.stop();
     }
 
