@@ -22,8 +22,6 @@ public class AutonomousConveyor extends Command {
     	speed = s;
     	time = t;
     	con_timer = new Timer();
-    	
-  
     }
 
     // Called just before this Command runs the first time
@@ -31,12 +29,12 @@ public class AutonomousConveyor extends Command {
     	con_timer.reset();
     	con_timer.start();
 		//System.out.println("initialized" + con_timer.get());
-		Robot.conveyor_belt.setSpeed(speed);
+		
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
+    	Robot.conveyor_belt.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

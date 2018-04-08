@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4856.robot.subsystems;
 
+import org.usfirst.frc.team4856.robot.commands.AutonomousConveyor;
+
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,6 +20,10 @@ public class ConveyorBelt extends Subsystem {
 	public void setSpeed(double speed) {
 //		System.out.println(speed);
 		beltMotor.set(speed);
+	}
+	
+	public void stopBelt() {
+		beltMotor.set(0);
 	}
 
     // Put methods for controlling this subsystem

@@ -20,13 +20,6 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain drivetrain;
 	public static ConveyorBelt conveyor_belt;
 	
-	public static Command autonomousCommand1;
-	public static Command autonomousCommand2;
-	public static Command autonomousCommand3;
-	
-	
-	
-	
 	Thread visionThread;
 	
 //		maximum distance in inches we expect the robot to see
@@ -68,11 +61,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 			
 		//TODO: Replace with new autonomous
-		autonomousMode = new AutonomousMode(); 
-		autonomousCommand1 = new AutonomousConveyor(0.3, 2.0);
-		//autonomousCommand2 = new DriveStraight(120, 0.5);
-		//autonomousCommand3 = new DriveStraight(21, 0.3);
-		
+		//autonomousMode = new AutonomousMode(); 
     }
 
 	public void disabledPeriodic() {
@@ -85,7 +74,131 @@ public class Robot extends IterativeRobot {
 
         // schedule the autonomous command (example)
     	// if (the autonomousCommand does not return a null set (is not teleop), then run the autonomousCommand
-    	 autonomousMode.start();	 
+    	String gameData = DriverStation.getInstance().getGameSpecificMessage();
+    	//new DriveStraight(250, 0.5);
+    	
+    	CommandGroup forwardDump = new CommandGroup();
+	    	forwardDump.addSequential(new DriveStraight(100, 0.3));
+	    	forwardDump.addSequential(new DriveStraight(10, 0.2));
+	    	forwardDump.addSequential(new AutonomousConveyor (0.6, 2.0));
+	    	forwardDump.addSequential(new TurnRight(90,0.5));
+	    	forwardDump.addSequential(new DriveStraight(70, 0.3));
+	    	forwardDump.addSequential(new TurnLeft(90,0.5));
+	    	forwardDump.addSequential(new DriveStraight(30,0.4));
+    	
+//    	CommandGroup leftLeft = new CommandGroup();
+//	    	leftLeft.addSequential(new DriveStraight(120, 0.3));
+//	    	leftLeft.addSequential(new TurnLeft(90, 0.3));
+//	    	leftLeft.addSequential(new DriveStraight(21, 0.3));
+//	    	
+//	    	leftLeft.addSequential(new AutonomousConveyor(0.3, 2.0));
+//	    	
+	    CommandGroup impromptu =  new CommandGroup();
+	    	impromptu.addSequential(new DriveStraight(40, 0.3));
+	    	impromptu.addSequential(new TurnRight(30, 0.5));
+	    	impromptu.addSequential(new DriveStraight(150, 0.3));
+	    
+////	    CommandGroup leftCenter = new CommandGroup();
+////	    	leftLeft.addSequential(new DriveStraight(198 - RobotMap.robotLength, 0.5));
+////	    	leftLeft.addSequential(new TurnLeft(90, 0.15));
+////	    	leftLeft.addSequential(new DriveStraight(99, 0.5));
+////	    	leftLeft.addSequential(new TurnRight(90, 0.15));
+////	    	leftLeft.addSequential(new DriveStraight(22, 0.5));
+////	    	leftLeft.addSequential(new TurnRight(90, 0.15));
+////	    	leftLeft.addSequential(new DriveStraight(21, 0.3));
+////	    	leftLeft.addSequential(new AutonomousConveyor(0.3, 2.0));
+////	    
+	    	
+	    CommandGroup leftDump = new CommandGroup();
+	    	leftDump.addSequential(new DriveStraight(40, 0.5));
+	    	leftDump.addSequential(new TurnLeft(90, 0.3));
+	    	leftDump.addSequential(new DriveStraight(165, 0.5));
+	    	leftDump.addSequential(new TurnRight(90, 0.3));
+	    	leftDump.addSequential(new DriveStraight(10, 0.4));
+	    	leftDump.addSequential(new DriveStraight(30, 0.2));
+	    	leftDump.addSequential(new AutonomousConveyor(0.3, 2.0));
+	    	
+	    	
+//	    CommandGroup rightLeft = new CommandGroup();
+//	    	rightLeft.addSequential(new DriveStraight(220, 0.5));
+//	    	rightLeft.addSequential(new TurnLeft(90, 0.3));
+//	    	rightLeft.addSequential(new DriveStraight(197, 0.5));
+//	    	rightLeft.addSequential(new TurnLeft(90, 0.3));
+//	    	rightLeft.addSequential(new DriveStraight(60.5, 0.5));
+//	    	rightLeft.addSequential(new TurnLeft(90,0.3));
+//	    	rightLeft.addSequential(new DriveStraight(21, 0.3));
+//	    	rightLeft.addSequential(new AutonomousConveyor(0.3, 2.0));
+//	   
+	    CommandGroup leftRight = new CommandGroup();
+	    	//leftRight.addSequential(new DriveStraight(220, 0.5));
+//	    	leftRight.addSequential(new TurnRight(90, 0.3));
+//	    	leftRight.addSequential(new DriveStraight(197, 0.5));
+//	    	leftRight.addSequential(new TurnRight(90,0.3));
+//	    	leftRight.addSequential(new DriveStraight(60.5, 0.5));
+//	    	leftRight.addSequential(new TurnRight(90,0.3));
+//	    	leftRight.addSequential(new DriveStraight(21, 0.3));
+//	    	leftRight.addSequential(new AutonomousConveyor(0.3, 2.0));
+	    	
+////	    CommandGroup rightCenter = new CommandGroup();
+////	    	rightCenter.addSequential(new DriveStraight(198 - RobotMap.robotLength, 0.5));
+////	    	rightCenter.addSequential(new TurnRight(90, 0.15));
+////	    	rightCenter.addSequential(new DriveStraight(99, 0.5));
+////	    	rightCenter.addSequential(new TurnLeft(90, 0.15));
+////	    	rightCenter.addSequential(new DriveStraight(22, 0.5));
+////	    	rightCenter.addSequential(new TurnLeft(90, 0.15));
+////	    	rightCenter.addSequential(new DriveStraight(21, 0.3));
+////	    	rightCenter.addSequential(new AutonomousConveyor (0.3, 2.0));
+////	
+//	    	
+	    CommandGroup rightRight = new CommandGroup();
+	    	rightRight.addSequential(new DriveStraight(120, 0.5));
+	    	rightRight.addSequential(new TurnLeft(90, 0.3));
+	    	rightRight.addSequential(new DriveStraight(21, 0.3));
+	    	rightRight.addSequential(new AutonomousConveyor(0.3, 2.0));
+	    	
+    	
+	    System.out.println("Game Data: " + gameData);	
+	    	
+	    if (gameData.length() > 0) {
+    		if (gameData.charAt(0) == 'L') {
+    			//FROM LEFT
+    			Timer.delay(2);
+//    			Scheduler.getInstance().add();
+//    			impromptu.start();
+    			Scheduler.getInstance().add(leftDump);
+    			leftDump.start();
+    			
+    			//Scheduler.getInstance().add(leftLeft);
+    			//leftLeft.start();
+    			//FROM CENTER
+    			//Scheduler.getInstance().add(leftCenter);
+    			//leftCenter.start();
+    			//FROM RIGHT
+    			//Scheduler.getInstance().add(rightLeft);
+    			//rightLeft.start();
+    			
+    		} else if (gameData.charAt(0) == 'R') {
+    			Timer.delay(2);
+    			Scheduler.getInstance().add(forwardDump);
+    			forwardDump.start();
+    			//Scheduler.getInstance().add(impromptu);
+    			//impromptu.start();
+    			//FROM LEFT
+    			//Scheduler.getInstance().add(leftRight);
+    			//leftRight.start();
+    			//FROM CENTER
+    			//Scheduler.getInstance().add(rightCenter);
+    			//rightCenter.start(); 
+    			//FROM RIGHT
+    			//Scheduler.getInstance().add(rightRight);
+    			
+    			//rightRight.start(); 
+    		}
+    	}
+//    	
+    	//autonomousMode.start();	
+	    //impromptu.start();
+	 
     }
 
     @Override //newer GRIP code
@@ -130,7 +243,7 @@ public class Robot extends IterativeRobot {
       //in teleopPeriodic, the arcadeDrive method is continuously called. When you comment out that method, teleop doesn't crash	
    
     }
-    
+      
 //    private class MyPidOutput implements PIDOutput {
 //		@Override
 //		public void pidWrite(double output) {

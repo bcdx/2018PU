@@ -15,6 +15,7 @@ public class OI {
 	public Joystick beltStick = new Joystick(1);
 
 	public OI() {
+		
 	}
 	
     //// CREATING BUTTONS

@@ -1,3 +1,4 @@
+
 package org.usfirst.frc.team4856.robot.commands;
 
 import org.usfirst.frc.team4856.robot.Robot;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class AutonomousMode extends CommandGroup {
-	public ADXRS450_Gyro gyroSPI = new ADXRS450_Gyro();
+	public ADXRS450_Gyro gyroSPI; // = new ADXRS450_Gyro();
 	AutonomousConveyor conveyor;
 	Timer timer;
 	Timer con_timer;
@@ -61,6 +62,8 @@ public class AutonomousMode extends CommandGroup {
 	    Robot.drivetrain.right2.set(ControlMode.PercentOutput, 0);
 	}
 	
+	
+	
 	public void setLeftSpeed(double speed){
 	   	Robot.drivetrain.left1.set(ControlMode.PercentOutput, speed);
 	    Robot.drivetrain.left2.set(ControlMode.PercentOutput, speed);
@@ -78,6 +81,7 @@ public class AutonomousMode extends CommandGroup {
 		//System.out.println("voltage:" + averageVolts);
 		return averageVolts;
 	}
+	
 	public void driveDistance_obstruction(double targetDistance, double speed){
 		System.out.println("first ultra reading:" + ultra.getAverageVoltage());
 		Timer.delay(2.0);
@@ -147,7 +151,7 @@ public class AutonomousMode extends CommandGroup {
 	
 	public void turnRight(double angle, double speed){
 		double initialAngle = gyroSPI.getAngle();
-		Timer.delay(0.01);
+		Timer.delay(0.03);
 		double currentSpeed = speed;
 		
 		while (gyroSPI.getAngle() < initialAngle + angle) {
@@ -179,7 +183,6 @@ public class AutonomousMode extends CommandGroup {
 				currentSpeed = currentSpeed * 0.8;
 			}
 		}
-		System.out.println(gyroSPI.getAngle());
 		System.out.println("DONE TURNING LEFT");
 		stop();
 	}
@@ -210,10 +213,11 @@ public class AutonomousMode extends CommandGroup {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
+    	gyroSPI = DriveTrain.gyroSPI;
     	
 //    	System.out.println("initializing");
 //    	
-//    	System.out.println(" s conveying");
+//    	System.out.println("s conveying");
 //    	new AutonomousConveyor(0.5,5.0);
 //    	System.out.println("e conveying");
 //    	
@@ -248,22 +252,23 @@ public class AutonomousMode extends CommandGroup {
 //    		}
 // 	}
     	
-
-    	driveDistance(120, 0.5);
-		turnLeft(90, 0.15);
-    	driveDistance(21, 0.3);
-		autonConveyor(0.3, 2.0);
+//
+//    	driveDistance(120, 0.5);
+//		turnRight(90, 0.15);
+//    	driveDistance(21, 0.3);
+//		autonConveyor(0.3, 2.0);
 		
     	 
     	//printUltraValues();
     	//driveDistance_obstruction(600, 0.5);
     	//printUltraValues();
     	//driveDistance_obstruction(120, 0.5);
+//    	
+//    	while (timer.get() < 15) {
+//    		System.out.println(gyroSPI.getAngle());
+//    		Timer.delay(1);
+//    	}
     	
-    	//Robot.autonomousCommand2.start(); //drivestraight
-    	//turn
-    	//Robot.autonomousCommand3.start();//drivestraight
-    	//Robot.autonomousCommand1.start(); //conveyor belt
     	
     }
     

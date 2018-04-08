@@ -15,6 +15,7 @@ public interface RobotMap {
 	public static final int LeftBackMotor = 2;
 	public static final int RightFrontMotor = 3;
 	public static final int RightBackMotor = 4;
+	public static final int robotLength = 34;
 	
 	// ENCODER CONSTANTS
 	

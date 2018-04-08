@@ -1,9 +1,10 @@
 //package org.usfirst.frc.team4856.robot;
 //
-//
-//-
 //import edu.wpi.first.wpilibj.AnalogChannel;
+//import edu.wpi.first.wpilibj.AnalogInput;
+//import edu.wpi.first.wpilibj.SensorBase;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+//
 //
 //public class Ultrasonic extends SensorBase {
 //
@@ -14,6 +15,7 @@
 //    private double min_distance;  //Minimum distance the ultrasonic sensor can return in inches
 //    private double distance_range;//The range of the distances returned by this class in inches (maximum - minimum)
 //    AnalogChannel channel;
+//    AnalogInput ultra = new AnalogInput(1);
 //    //constructor
 //    public Ultrasonic(int _channel) {
 //        channel = new AnalogChannel();
@@ -25,8 +27,7 @@
 //		distance_range = 60.0 - min_distance;
 //    }
 //    //constructor
-//    public Ultrasonic(int _channel, boolean _use_units, double _min_voltage,+
-//            double _max_voltage, double _min_distance, double _max_distance) {
+//    public Ultrasonic(int _channel, boolean _use_units, double _min_voltage, double _max_voltage, double _min_distance, double _max_distance) {
 //        channel = new AnalogChannel();
 //        //only use unit-specific variables if we're using units
 //        if (_use_units) {
@@ -37,10 +38,10 @@
 //            distance_range = _max_distance - _min_distance;
 //        }
 //    }
-//    // Just get the voltage.
-//    double GetVoltage() {
-//        return channel.getVoltage();
-//    }
+//    // Just get the voltage. //this was uncommented before (there was no public) and there was an error with returning channel
+////   public double getVoltage() {
+////    	return channel;
+////    }
 //    /* GetRangeInInches
 //     * Returns the range in inches
 //     * Returns -1.0 if units are not being used
@@ -53,7 +54,7 @@
 //        if (!use_units) {
 //            return -1.0;
 //        }
-//        range = channel.getVoltage();
+//        range = ultra.getVoltage();//was channel before
 //        if (range < min_voltage) {
 //            return -2.0;
 //        }
@@ -75,7 +76,7 @@
 //        if (!use_units) {
 //            return -1.0;
 //        }
-//        range = channel.getVoltage();
+//        range = ultra.getVoltage();//was channel before
 //        if (range < min_voltage) {
 //            return -2.0;
 //        }
